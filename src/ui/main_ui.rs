@@ -171,6 +171,7 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, main_area: Rect) {
         &display_mode_menu,
         "Help",
         "Credits",
+        "Chess960 mode",
     ];
     let mut menu_body: Vec<Line<'_>> = vec![];
 

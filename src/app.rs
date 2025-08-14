@@ -258,8 +258,16 @@ impl App {
             }
             4 => self.toggle_help_popup(),
             5 => self.current_page = Pages::Credit,
+            6 => {
+                self.current_page = Pages::Solo;
+                self.chess960_board();
+            },
             _ => {}
         }
+    }
+
+    pub fn chess960_board(&self) {
+
     }
 
     pub fn update_config(&self) {

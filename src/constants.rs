@@ -48,7 +48,7 @@ pub enum Pages {
 }
 impl Pages {
     pub fn variant_count() -> usize {
-        6
+        7
     }
 }
 
