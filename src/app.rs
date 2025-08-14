@@ -16,6 +16,9 @@ use std::{
     thread::sleep,
     time::Duration,
 };
+use crate::game_logic::board::Board;
+use crate::game_logic::game_board::GameBoard;
+use crate::pieces::PieceType;
 
 /// Application result type.
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
@@ -266,8 +269,101 @@ impl App {
         }
     }
 
-    pub fn chess960_board(&self) {
+    pub fn chess960_board(&mut self) {
+        let mut pieces: [Option<PieceType>; 8] = [ None, None, None, None, None, None, None, None ];
 
+        let king_index = rand::random_range(1..=6);
+        let first_rook_index = rand::random_range(0..=king_index);
+        let second_rook_index = rand::random_range(king_index..=7);
+
+        pieces[king_index] = Some(PieceType::King);
+        pieces[first_rook_index] = Some(PieceType::Rook);
+        pieces[second_rook_index] = Some(PieceType::Rook);
+
+        let available: Vec<usize> = pieces.iter()
+            .enumerate()
+            .filter_map(|(index, &value)| if value.is_none() { Some(index) } else { None })
+            .collect();
+
+        let mut filled: Vec<usize> = Vec::new();
+
+        while filled.len() < 2 {
+            let bishop_index: usize = available[rand::random_range(0..available.len())];
+
+            if filled.is_empty() || ((bishop_index % 2) != (filled[0] % 2) && !filled.contains(&bishop_index)) {
+                filled.push(bishop_index);
+                pieces[bishop_index] = Some(PieceType::Bishop);
+            }
+        }
+
+        while filled.len() < 4 {
+            let knight_index: usize = available[rand::random_range(0..available.len())];
+
+            if !filled.contains(&knight_index) {
+                filled.push(knight_index);
+                pieces[knight_index] = Some(PieceType::Knight);
+            }
+        }
+
+        while filled.len() < 5 {
+            let queen_index: usize = available[rand::random_range(0..available.len())];
+
+            if !filled.contains(&queen_index) {
+                filled.push(queen_index);
+                pieces[queen_index] = Some(PieceType::Queen);
+            }
+        }
+
+        let board: Board = Board::from(
+            [
+                [
+                    Some((pieces[7].unwrap(), PieceColor::Black)),
+                    Some((pieces[6].unwrap(), PieceColor::Black)),
+                    Some((pieces[5].unwrap(), PieceColor::Black)),
+                    Some((pieces[4].unwrap(), PieceColor::Black)),
+                    Some((pieces[3].unwrap(), PieceColor::Black)),
+                    Some((pieces[2].unwrap(), PieceColor::Black)),
+                    Some((pieces[1].unwrap(), PieceColor::Black)),
+                    Some((pieces[0].unwrap(), PieceColor::Black)),
+                ],
+                [
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                    Some((PieceType::Pawn, PieceColor::Black)),
+                ],
+                [None, None, None, None, None, None, None, None],
+                [None, None, None, None, None, None, None, None],
+                [None, None, None, None, None, None, None, None],
+                [None, None, None, None, None, None, None, None],
+                [
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                    Some((PieceType::Pawn, PieceColor::White)),
+                ],
+                [
+                    Some((pieces[0].unwrap(), PieceColor::White)),
+                    Some((pieces[1].unwrap(), PieceColor::White)),
+                    Some((pieces[2].unwrap(), PieceColor::White)),
+                    Some((pieces[3].unwrap(), PieceColor::White)),
+                    Some((pieces[4].unwrap(), PieceColor::White)),
+                    Some((pieces[5].unwrap(), PieceColor::White)),
+                    Some((pieces[6].unwrap(), PieceColor::White)),
+                    Some((pieces[7].unwrap(), PieceColor::White)),
+                ],
+            ]
+        );
+
+        self.game.game_board.board = board;
     }
 
     pub fn update_config(&self) {
