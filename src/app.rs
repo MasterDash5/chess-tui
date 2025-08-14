@@ -305,26 +305,17 @@ impl App {
             }
         }
 
-        while filled.len() < 5 {
-            let queen_index: usize = available[rand::random_range(0..available.len())];
-
-            if !filled.contains(&queen_index) {
-                filled.push(queen_index);
-                pieces[queen_index] = Some(PieceType::Queen);
-            }
-        }
-
         let board: Board = Board::from(
             [
                 [
-                    Some((pieces[7].unwrap(), PieceColor::Black)),
-                    Some((pieces[6].unwrap(), PieceColor::Black)),
-                    Some((pieces[5].unwrap(), PieceColor::Black)),
-                    Some((pieces[4].unwrap(), PieceColor::Black)),
-                    Some((pieces[3].unwrap(), PieceColor::Black)),
-                    Some((pieces[2].unwrap(), PieceColor::Black)),
-                    Some((pieces[1].unwrap(), PieceColor::Black)),
-                    Some((pieces[0].unwrap(), PieceColor::Black)),
+                    Some((pieces[7].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[6].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[5].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[4].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[3].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[2].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[1].unwrap_or(PieceType::Queen), PieceColor::Black)),
+                    Some((pieces[0].unwrap_or(PieceType::Queen), PieceColor::Black)),
                 ],
                 [
                     Some((PieceType::Pawn, PieceColor::Black)),
@@ -351,14 +342,14 @@ impl App {
                     Some((PieceType::Pawn, PieceColor::White)),
                 ],
                 [
-                    Some((pieces[0].unwrap(), PieceColor::White)),
-                    Some((pieces[1].unwrap(), PieceColor::White)),
-                    Some((pieces[2].unwrap(), PieceColor::White)),
-                    Some((pieces[3].unwrap(), PieceColor::White)),
-                    Some((pieces[4].unwrap(), PieceColor::White)),
-                    Some((pieces[5].unwrap(), PieceColor::White)),
-                    Some((pieces[6].unwrap(), PieceColor::White)),
-                    Some((pieces[7].unwrap(), PieceColor::White)),
+                    Some((pieces[0].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[1].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[2].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[3].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[4].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[5].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[6].unwrap_or(PieceType::Queen), PieceColor::White)),
+                    Some((pieces[7].unwrap_or(PieceType::Queen), PieceColor::White)),
                 ],
             ]
         );
